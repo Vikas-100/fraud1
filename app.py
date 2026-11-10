@@ -4,7 +4,14 @@ from backend.database import init_db, log_scan
 from backend.classifier import analyze_message_content
 from backend.routes import api_bp
 
-app = Flask(__name__)
+# Resolve absolute paths so Vercel serverless can find templates and static files
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+app = Flask(
+    __name__,
+    template_folder=os.path.join(BASE_DIR, "templates"),
+    static_folder=os.path.join(BASE_DIR, "static"),
+)
 
 # Register REST API blueprint
 app.register_blueprint(api_bp)

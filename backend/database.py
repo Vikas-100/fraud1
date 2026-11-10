@@ -3,7 +3,16 @@ import json
 import os
 from datetime import datetime
 
-DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "suspicious_messages.db")
+# On Vercel (read-only filesystem), use /tmp for the SQLite database.
+# Locally, use the project root directory.
+def _get_db_path():
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # Vercel sets VERCEL=1 and has a read-only filesystem except /tmp
+    if os.environ.get("VERCEL"):
+        return os.path.join("/tmp", "suspicious_messages.db")
+    return os.path.join(project_root, "suspicious_messages.db")
+
+DB_PATH = _get_db_path()
 
 def get_connection():
     conn = sqlite3.connect(DB_PATH)
