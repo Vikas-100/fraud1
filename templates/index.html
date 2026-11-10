@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suspicious Message Classification</title>
+    <!-- Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <header class="header">
+        <div class="container nav">
+            <div class="brand">
+                <div class="brand-shield">
+                    <span class="brand-icon">🛡️</span>
+                    <span class="pulse-ring"></span>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">Suspicious Message Classification</span>
+                    <span class="brand-sub">Backend Intelligence & Risk Evaluation Engine</span>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <button id="openReportModalBtn" class="action-btn-outline" title="Report a scam message">
+                    <span>🚨</span> Report Scam
+                </button>
+                <button id="soundToggle" class="sound-toggle" title="Toggle Alert Sound" aria-label="Toggle Alert Sound">
+                    <span id="soundIcon">🔔</span> Sound ON
+                </button>
+                <span class="badge active-badge">● Backend Online</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Live Backend Telemetry Strip -->
+        <section class="telemetry-bar">
+            <div class="stat-card">
+                <span class="stat-icon">🔍</span>
+                <div>
+                    <div id="statTotalScanned" class="stat-value">0</div>
+                    <div class="stat-label">Total Analyzed</div>
+                </div>
+            </div>
+            <div class="stat-card stat-fraud">
+                <span class="stat-icon">🚨</span>
+                <div>
+                    <div id="statFraudDetected" class="stat-value">0</div>
+                    <div class="stat-label">Fraud Detected</div>
+                </div>
+            </div>
+            <div class="stat-card stat-suspicious">
+                <span class="stat-icon">⚠️</span>
+                <div>
+                    <div id="statSuspicious" class="stat-value">0</div>
+                    <div class="stat-label">Suspicious Alerts</div>
+                </div>
+            </div>
+            <div class="stat-card stat-safe">
+                <span class="stat-icon">✅</span>
+                <div>
+                    <div id="statSafe" class="stat-value">0</div>
+                    <div class="stat-label">Safe Messages</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation Tabs -->
+        <div class="tabs-nav">
+            <button id="tabScannerBtn" class="tab-btn active">
+                <span>🛡️</span> Classifier & Scanner
+            </button>
+            <button id="tabHistoryBtn" class="tab-btn">
+                <span>📜</span> Backend Audit History
+            </button>
+        </div>
+
+        <!-- TAB 1: Main Scanner & Classification View -->
+        <div id="scannerTabView" class="tab-content">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-badge">Deep Threat Classifier</div>
+                <h1>Suspicious Message Classification</h1>
+                <p>Scan SMS, WhatsApp messages, payment links, and emails. The backend analyzes heuristic attack vectors and provides real-time fraud alerts.</p>
+            </section>
+
+            <!-- Main Checker Grid -->
+            <div class="main-grid">
+                <!-- Left: Message Input & Quick Samples -->
+                <section class="card checker-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <span class="card-icon">✉️</span>
+                            <div>
+                                <h2>Inspect Message Content</h2>
+                                <p class="card-subtitle">Paste message text for backend security classification</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <label for="messageInput">Message Text</label>
+                        <textarea id="messageInput" placeholder="Paste incoming message, SMS, WhatsApp text, or suspicious email here..."></textarea>
+                        <div class="char-count"><span id="charCount">0</span> characters</div>
+                    </div>
+
+                    <!-- Quick Samples -->
+                    <div class="quick-samples">
+                        <span class="samples-label">Quick Test Scenarios:</span>
+                        <div class="sample-chips">
+                            <button type="button" class="sample-chip" data-sample="scam1">🏦 Bank KYC Trap</button>
+                            <button type="button" class="sample-chip" data-sample="scam2">🎁 Lottery Jackpot</button>
+                            <button type="button" class="sample-chip" data-sample="scam3">💼 Work-From-Home Task</button>
+                            <button type="button" class="sample-chip" data-sample="safe">✅ Genuine Friend Message</button>
+                        </div>
+                    </div>
+
+                    <div class="button-row">
+                        <button id="checkBtn" class="btn primary">
+                            <span class="btn-icon">🔍</span>
+                            <span>Check Message</span>
+                        </button>
+                        <button id="clearBtn" class="btn secondary">
+                            <span class="btn-icon">🗑️</span>
+                            <span>Clear</span>
+                        </button>
+                    </div>
+
+                    <div id="errorBox" class="error-box hidden" role="alert"></div>
+                </section>
+
+                <!-- Right: Live Result Card -->
+                <section id="resultSection" class="card result-card hidden">
+                    <div class="result-header">
+                        <div>
+                            <span id="resultCategoryBadge" class="result-category-badge">ANALYSIS RESULT</span>
+                            <h2 id="resultTitle">Analyzing...</h2>
+                        </div>
+                        <div class="risk-gauge-container">
+                            <div id="gaugeRing" class="risk-gauge">
+                                <span id="scoreNumber">0</span>
+                                <small>/10</small>
+                            </div>
+                            <span class="gauge-label">RISK SCORE</span>
+                        </div>
+                    </div>
+
+                    <!-- Prominent Status Banner -->
+                    <div id="statusBanner" class="status-banner">
+                        <div class="banner-icon-col">
+                            <span id="bannerIcon">⚠️</span>
+                        </div>
+                        <div class="banner-text-col">
+                            <h3 id="bannerHeadline">Message Classification</h3>
+                            <p id="bannerAdvice">Awaiting input...</p>
+                        </div>
+                    </div>
+
+                    <!-- Detected Indicators -->
+                    <div class="details-section">
+                        <div class="details-title-row">
+                            <h3>🚩 Threat Indicators Found</h3>
+                            <span id="detectedCount" class="count-pill">0 Flags</span>
+                        </div>
+                        <ul id="warningsList" class="warnings-list">
+                            <!-- Populated dynamically -->
+                        </ul>
+                    </div>
+
+                    <!-- Direct Report button in result -->
+                    <div id="reportActionRow" class="report-action-row hidden">
+                        <button id="reportThisMessageBtn" class="report-link-btn">
+                            🚩 Report this scam message to Backend Database
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Safety Guidelines Grid -->
+            <section class="tips-card">
+                <div class="tips-header">
+                    <div class="tips-icon-wrap">🛡️</div>
+                    <div>
+                        <h2>Cybersecurity Defense Checklist</h2>
+                        <p>Essential safeguards against sophisticated smishing and social engineering attacks.</p>
+                    </div>
+                </div>
+                <div class="tips-grid">
+                    <div class="tip-item">
+                        <span class="tip-icon">🔑</span>
+                        <h4>Never Share OTPs or PINs</h4>
+                        <p>Banks and legitimate services will NEVER request your OTP or UPI PIN for deposits or refunds.</p>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-icon">🔗</span>
+                        <h4>Scrutinize Masked Links</h4>
+                        <p>Avoid shorteners like bit.ly, tinyurl, or suspicious domains imitating real bank URLs.</p>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-icon">⚠️</span>
+                        <h4>Beware of Fake Urgency</h4>
+                        <p>"Account blocked", "Power disconnect tonight", or "Legal notice" are tactics to cause panic.</p>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-icon">🎁</span>
+                        <h4>Disregard Unsolicited Prizes</h4>
+                        <p>If you didn't enter a contest, you didn't win. Never pay "handling or tax fees" to claim rewards.</p>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-icon">🏦</span>
+                        <h4>Verify Via Official Numbers</h4>
+                        <p>Always verify account issues by calling the official phone number listed on your physical bank card.</p>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-icon">🚫</span>
+                        <h4>Block & Report Fraud Senders</h4>
+                        <p>Submit unknown fraudulent senders to the national cybercrime portal and report them in-app.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 2: Backend Audit History View -->
+        <div id="historyTabView" class="tab-content hidden">
+            <section class="card history-card">
+                <div class="card-header history-header">
+                    <div>
+                        <h2>Backend Scan Audit Log</h2>
+                        <p class="card-subtitle">Real-time database records of all evaluated messages</p>
+                    </div>
+                    <button id="refreshHistoryBtn" class="refresh-btn">
+                        <span>🔄</span> Refresh Log
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Classification</th>
+                                <th>Risk Score</th>
+                                <th>Message Snippet</th>
+                                <th>Detected Flags</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            <tr>
+                                <td colspan="6" class="empty-state">Loading history logs from SQLite database...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <section class="disclaimer">
+            <span>ℹ️</span>
+            <div>
+                <strong>Classification & Security Notice:</strong> This application utilizes heuristic security algorithms and backend database tracking. Always confirm high-stakes financial communications with verified institution channels.
+            </div>
+        </section>
+    </main>
+
+    <!-- Phone-Style Emergency Red Alert Modal -->
+    <div id="phoneAlertOverlay" class="phone-alert-overlay hidden" role="dialog" aria-modal="true">
+        <div class="phone-mockup-wrapper">
+            <!-- Simulated Smartphone Chassis -->
+            <div class="phone-frame">
+                <div class="phone-notch">
+                    <div class="phone-camera"></div>
+                    <div class="phone-speaker"></div>
+                </div>
+
+                <div class="phone-screen emergency-mode">
+                    <!-- Siren Bar -->
+                    <div class="siren-bar">
+                        <div class="siren-light red-light"></div>
+                        <div class="siren-title">🚨 EMERGENCY SECURITY ALERT 🚨</div>
+                        <div class="siren-light red-light"></div>
+                    </div>
+
+                    <div class="phone-alert-body">
+                        <div class="warning-flasher-icon">
+                            <span class="pulsing-shield">🛑</span>
+                        </div>
+
+                        <div class="alert-classification-tag">FRAUD MESSAGE DETECTED</div>
+
+                        <!-- User's required exact sentence -->
+                        <div class="custom-alert-message">
+                            "Your message is very suspicious, don't give any respond to that message, that is fraud message"
+                        </div>
+
+                        <div class="alert-message-preview">
+                            <label>Suspect Message Snippet:</label>
+                            <p id="alertSnippetText">...</p>
+                        </div>
+
+                        <div class="phone-alert-actions">
+                            <button id="alertDismissBtn" class="phone-action-btn primary-action">
+                                🛡️ I Understand (Don't Respond)
+                            </button>
+                            <button id="alertReportNowBtn" class="phone-action-btn secondary-action">
+                                🚨 Report Scam to Database
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="phone-home-indicator"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Fraud Modal -->
+    <div id="reportModal" class="modal-overlay hidden" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>🚨 Report Fraud / Scam Message</h3>
+                <button id="closeReportModalBtn" class="close-modal-btn">✕</button>
+            </div>
+            <form id="reportForm">
+                <div class="form-group">
+                    <label for="reportSender">Sender Phone / Email / Name (Optional)</label>
+                    <input type="text" id="reportSender" placeholder="e.g. +91 9876543210 or SBI-ALERT">
+                </div>
+                <div class="form-group">
+                    <label for="reportCategory">Scam Category</label>
+                    <select id="reportCategory">
+                        <option value="Bank / KYC Verification Scam">Bank / KYC Verification Scam</option>
+                        <option value="Lottery / Prize Fraud">Lottery / Prize Fraud</option>
+                        <option value="Work-From-Home / Task Scam">Work-From-Home / Task Scam</option>
+                        <option value="Utility / Electricity Disconnection">Utility / Electricity Disconnection</option>
+                        <option value="Phishing Link / Credential Harvest">Phishing Link / Credential Harvest</option>
+                        <option value="Other">Other Suspicious Message</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reportMessage">Fraudulent Message Text</label>
+                    <textarea id="reportMessage" rows="4" placeholder="Paste the exact message you received..." required></textarea>
+                </div>
+                <div id="reportStatusMsg" class="report-status hidden"></div>
+                <div class="modal-actions">
+                    <button type="submit" id="submitReportBtn" class="btn primary">
+                        <span>📤</span> Submit Report to Database
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container footer-content">
+            <p><strong>Suspicious Message Classification</strong> • Full-Stack Security Application</p>
+            <p class="footer-sub">Flask + SQLite Backend Engine • Automated Heuristic Threat Detection</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
