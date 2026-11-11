@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 from backend.database import init_db, log_scan
 from backend.classifier import analyze_message_content
 from backend.routes import api_bp
@@ -19,6 +19,15 @@ app.register_blueprint(api_bp)
 # Initialize database tables on server start
 with app.app_context():
     init_db()
+
+@app.route("/static/<path:filename>")
+def serve_static(filename):
+    """Explicit static handler ensuring proper MIME types across all deployment platforms."""
+    return send_from_directory(os.path.join(BASE_DIR, "static"), filename)
+
+@app.route("/favicon.ico")
+def favicon():
+    return "", 204
 
 @app.route("/")
 def home():

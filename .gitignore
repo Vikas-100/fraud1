@@ -1,0 +1,9 @@
+.vercel
+.env*
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+package-lock.json
+suspicious_messages.db
