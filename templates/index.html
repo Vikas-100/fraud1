@@ -9,6 +9,1393 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+/* ==========================================================================
+   TruthLens — Suspicious Message Classification
+   Theme: Executive Cyber Defense (Dark Navy, Blue Accents, Violet Highlights)
+   ========================================================================== */
+
+:root {
+    /* Background Canvas */
+    --bg-main: #ffffff;
+    --bg-header: rgba(255, 255, 255, 0.94);
+    --bg-card: #0f172a;
+    --bg-card-hover: #131d35;
+    --bg-card-inner: #0b1222;
+    --bg-subtle: #1e293b;
+    --bg-input: #090e1a;
+
+    /* Borders */
+    --border-card: rgba(59, 130, 246, 0.16);
+    --border-card-hover: rgba(59, 130, 246, 0.4);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-input: #1e293b;
+    --border-glow: rgba(99, 102, 241, 0.35);
+
+    /* Typography */
+    --text-heading: #f8fafc;
+    --text-body: #cbd5e1;
+    --text-muted: #64748b;
+    --text-light: #94a3b8;
+
+    /* Blue Primary Accents & Subtle Violet Highlights */
+    --accent-primary: #3b82f6;
+    --accent-blue: #2563eb;
+    --accent-cyan: #38bdf8;
+    --accent-violet: #8b5cf6;
+    --accent-indigo: #6366f1;
+    --primary-gradient: linear-gradient(135deg, #2563eb 0%, #4f46e5 55%, #7c3aed 100%);
+    --primary-gradient-hover: linear-gradient(135deg, #1d4ed8 0%, #4338ca 55%, #6d28d9 100%);
+    --gradient-glow: rgba(59, 130, 246, 0.4);
+    --violet-glow: rgba(139, 92, 246, 0.3);
+
+    /* Threat Status Indicators */
+    --safe: #10b981;
+    --safe-bg: rgba(16, 185, 129, 0.12);
+    --safe-border: rgba(16, 185, 129, 0.35);
+    --safe-text: #34d399;
+
+    --warning: #f59e0b;
+    --warning-bg: rgba(245, 158, 11, 0.12);
+    --warning-border: rgba(245, 158, 11, 0.35);
+    --warning-text: #fbbf24;
+
+    --danger: #ef4444;
+    --danger-bg: rgba(239, 68, 68, 0.14);
+    --danger-border: rgba(239, 68, 68, 0.4);
+    --danger-text: #f87171;
+
+    /* Geometry & Shadows */
+    --radius-xl: 20px;
+    --radius-lg: 14px;
+    --radius-md: 10px;
+    --radius-sm: 6px;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 0 20px -3px rgba(59, 130, 246, 0.15);
+    --shadow-xl: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 35px -5px rgba(99, 102, 241, 0.25);
+
+    --transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Base Reset & Typography */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: #ffffff;
+    color: var(--text-body);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.05) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(124, 58, 237, 0.05) 0px, transparent 50%),
+        radial-gradient(at 50% 60%, rgba(30, 58, 138, 0.03) 0px, transparent 60%),
+        radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.04) 0px, transparent 50%);
+    background-attachment: fixed;
+}
+
+.container {
+    width: min(100% - 32px, 1140px);
+    margin: 0 auto;
+}
+
+/* ========================================= */
+/* HEADER & NAVIGATION                       */
+/* ========================================= */
+.header {
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.nav {
+    min-height: 74px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.brand-shield {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    background: var(--primary-gradient);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 8px 20px var(--gradient-glow);
+}
+
+.pulse-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    border: 2px solid var(--accent-primary);
+    animation: ringPulse 2.5s infinite;
+    pointer-events: none;
+}
+
+@keyframes ringPulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.35); opacity: 0; }
+}
+
+.brand-title {
+    display: block;
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    background: linear-gradient(135deg, #0f172a 40%, #2563eb 75%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.brand-sub {
+    display: block;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.action-btn-outline {
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+}
+
+.action-btn-outline:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: #ef4444;
+    color: #dc2626;
+    transform: translateY(-1px);
+}
+
+.sound-toggle {
+    background: #ffffff;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+}
+
+.sound-toggle:hover {
+    background: #f8fafc;
+    color: #0f172a;
+    border-color: #94a3b8;
+}
+
+.badge.active-badge {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ========================================= */
+/* TELEMETRY STRIP                           */
+/* ========================================= */
+.telemetry-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 24px 0 28px 0;
+}
+
+.stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-card-hover);
+    box-shadow: var(--shadow-lg);
+}
+
+.stat-icon {
+    font-size: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.stat-card.stat-fraud .stat-icon {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.35);
+}
+
+.stat-card.stat-suspicious .stat-icon {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: rgba(245, 158, 11, 0.35);
+}
+
+.stat-card.stat-safe .stat-icon {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: rgba(16, 185, 129, 0.35);
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-heading);
+    line-height: 1.1;
+    font-feature-settings: "tnum";
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+/* ========================================= */
+/* TABS NAVIGATION                           */
+/* ========================================= */
+.tabs-nav {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 12px;
+}
+
+.tab-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #64748b;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition);
+}
+
+.tab-btn:hover {
+    color: #0f172a;
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.tab-btn.active {
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.08);
+    border: 1px solid rgba(37, 99, 235, 0.3);
+    box-shadow: 0 0 16px rgba(37, 99, 235, 0.1);
+}
+
+/* ========================================= */
+/* HERO SECTION                              */
+/* ========================================= */
+.hero {
+    margin-bottom: 28px;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(37, 99, 235, 0.08);
+    border: 1px solid rgba(37, 99, 235, 0.22);
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+}
+
+.hero h1 {
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    color: #0f172a;
+    margin-bottom: 12px;
+}
+
+.hero p {
+    font-size: 15px;
+    color: #475569;
+    max-width: 680px;
+}
+
+/* ========================================= */
+/* MAIN CHECKER GRID & CARDS                 */
+/* ========================================= */
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 36px;
+    align-items: start;
+}
+
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-xl);
+    padding: 28px;
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition);
+}
+
+.card:hover {
+    border-color: var(--border-card-hover);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-title-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.card-icon {
+    font-size: 24px;
+    width: 44px;
+    height: 44px;
+    background: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-header h2 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-heading);
+}
+
+.card-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* Input Wrapper */
+.input-wrapper {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.input-wrapper label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-heading);
+    margin-bottom: 8px;
+}
+
+.input-wrapper textarea {
+    width: 100%;
+    min-height: 150px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-input);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    color: #f8fafc;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.6;
+    resize: vertical;
+    outline: none;
+    transition: var(--transition);
+}
+
+.input-wrapper textarea:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px var(--gradient-glow), 0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+.char-count {
+    text-align: right;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+}
+
+/* Quick Samples */
+.quick-samples {
+    margin-bottom: 22px;
+}
+
+.samples-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+
+.sample-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.sample-chip {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-body);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.sample-chip:hover {
+    color: #ffffff;
+    background: rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.45);
+    transform: translateY(-1px);
+}
+
+/* Button Row */
+.button-row {
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 13px 24px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: none;
+    transition: var(--transition);
+}
+
+.btn.primary {
+    background: var(--primary-gradient);
+    color: #ffffff;
+    flex: 2;
+    box-shadow: 0 4px 18px var(--gradient-glow);
+}
+
+.btn.primary:hover:not(:disabled) {
+    background: var(--primary-gradient-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(59, 130, 246, 0.5);
+}
+
+.btn.primary:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn.secondary {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-body);
+    flex: 1;
+}
+
+.btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border-color: var(--border-card);
+}
+
+.btn-icon {
+    font-size: 16px;
+}
+
+.error-box {
+    margin-top: 14px;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* ========================================= */
+/* RESULT CARD                               */
+/* ========================================= */
+.result-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    animation: fadeInSlide 0.3s ease;
+}
+
+@keyframes fadeInSlide {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 22px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.result-category-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+    color: #60a5fa;
+}
+
+.result-header h2 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+/* Circular Risk Gauge */
+.risk-gauge-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.risk-gauge {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-subtle);
+    border: 4px solid var(--border-subtle);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 22px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: var(--transition);
+}
+
+.risk-gauge small {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-left: 2px;
+}
+
+.risk-gauge.gauge-safe {
+    border-color: #10b981;
+    color: #34d399;
+    box-shadow: 0 0 18px rgba(16, 185, 129, 0.35);
+}
+
+.risk-gauge.gauge-suspicious {
+    border-color: #f59e0b;
+    color: #fbbf24;
+    box-shadow: 0 0 18px rgba(245, 158, 11, 0.35);
+}
+
+.risk-gauge.gauge-fraud {
+    border-color: #ef4444;
+    color: #f87171;
+    box-shadow: 0 0 22px rgba(239, 68, 68, 0.45);
+}
+
+.gauge-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    margin-top: 6px;
+}
+
+/* Prominent Status Banner */
+.status-banner {
+    display: flex;
+    gap: 16px;
+    padding: 18px 20px;
+    border-radius: var(--radius-lg);
+    background: var(--bg-card-inner);
+    border: 1px solid var(--border-subtle);
+    margin-bottom: 22px;
+}
+
+.status-banner.banner-safe {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.35);
+}
+
+.status-banner.banner-suspicious {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.35);
+}
+
+.status-banner.banner-fraud {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.45);
+}
+
+.banner-icon-col {
+    font-size: 32px;
+    line-height: 1;
+}
+
+.banner-headline {
+    font-size: 15px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.banner-advice {
+    font-size: 13px;
+    color: var(--text-body);
+    line-height: 1.5;
+}
+
+/* Details Section (Threat Indicators) */
+.details-section {
+    margin-bottom: 20px;
+}
+
+.details-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.details-title-row h3 {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text-heading);
+}
+
+.count-pill {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.warnings-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.warnings-list li {
+    background: var(--bg-card-inner);
+    border: 1px solid var(--border-subtle);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    color: var(--text-body);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.warnings-list li.safe-item {
+    border-color: rgba(16, 185, 129, 0.3);
+    background: rgba(16, 185, 129, 0.08);
+    color: #34d399;
+}
+
+.report-action-row {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.report-link-btn {
+    width: 100%;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px dashed rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 12px 18px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.report-link-btn:hover {
+    background: rgba(239, 68, 68, 0.22);
+    color: #ffffff;
+    border-color: #ef4444;
+}
+
+/* ========================================= */
+/* DEFENSE CHECKLIST / TIPS                  */
+/* ========================================= */
+.tips-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-xl);
+    padding: 28px;
+    margin-bottom: 32px;
+}
+
+.tips-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.tips-icon-wrap {
+    font-size: 24px;
+    width: 44px;
+    height: 44px;
+    background: rgba(139, 92, 246, 0.14);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tips-header h2 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-heading);
+}
+
+.tips-header p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.tip-item {
+    background: var(--bg-card-inner);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    transition: var(--transition);
+}
+
+.tip-item:hover {
+    border-color: var(--border-card-hover);
+    transform: translateY(-2px);
+}
+
+.tip-icon {
+    font-size: 22px;
+    margin-bottom: 8px;
+    display: inline-block;
+}
+
+.tip-item h4 {
+    font-size: 14px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 6px;
+}
+
+.tip-item p {
+    font-size: 12px;
+    color: var(--text-body);
+    line-height: 1.5;
+}
+
+/* ========================================= */
+/* AUDIT HISTORY TABLE                       */
+/* ========================================= */
+.history-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-xl);
+    padding: 28px;
+    margin-bottom: 32px;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.refresh-btn {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-body);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+}
+
+.refresh-btn:hover {
+    color: #ffffff;
+    border-color: var(--border-card);
+    background: rgba(59, 130, 246, 0.15);
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.history-table th {
+    text-align: left;
+    padding: 12px 14px;
+    background: var(--bg-card-inner);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.history-table td {
+    padding: 14px;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-body);
+}
+
+.history-table tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.history-table code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #93c5fd;
+}
+
+.table-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.badge-safe {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.badge-suspicious {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.badge-fraud {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 36px !important;
+    color: var(--text-muted);
+}
+
+/* Disclaimer */
+.disclaimer {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: rgba(37, 99, 235, 0.06);
+    border: 1px solid rgba(37, 99, 235, 0.18);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    font-size: 13px;
+    color: #334155;
+    margin-bottom: 40px;
+}
+
+/* ========================================= */
+/* PHONE EMERGENCY RED ALERT MODAL           */
+/* ========================================= */
+.phone-alert-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(12px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.phone-mockup-wrapper {
+    max-width: 380px;
+    width: 100%;
+}
+
+.phone-frame {
+    background: #000000;
+    border: 4px solid #334155;
+    border-radius: 44px;
+    padding: 14px;
+    box-shadow: 0 0 50px rgba(239, 68, 68, 0.4), 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+    position: relative;
+}
+
+.phone-notch {
+    width: 120px;
+    height: 18px;
+    background: #000000;
+    margin: 0 auto 10px auto;
+    border-radius: 0 0 14px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.phone-speaker {
+    width: 40px;
+    height: 4px;
+    background: #334155;
+    border-radius: 2px;
+}
+
+.phone-screen {
+    background: #7f1d1d;
+    border-radius: 32px;
+    padding: 22px 18px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.siren-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.siren-light {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ef4444;
+    animation: sirenBlink 0.8s infinite alternate;
+}
+
+@keyframes sirenBlink {
+    from { opacity: 0.3; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1.2); box-shadow: 0 0 12px #ef4444; }
+}
+
+.siren-title {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: #fecaca;
+}
+
+.pulsing-shield {
+    font-size: 48px;
+    display: inline-block;
+    animation: shieldPulse 1.2s infinite;
+}
+
+@keyframes shieldPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.alert-classification-tag {
+    display: inline-block;
+    background: #ef4444;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 999px;
+    letter-spacing: 0.8px;
+    margin: 12px 0 14px 0;
+}
+
+.custom-alert-message {
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px dashed #f87171;
+    border-radius: var(--radius-md);
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.4;
+    margin-bottom: 16px;
+}
+
+.alert-message-preview {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.alert-message-preview label {
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    color: #fca5a5;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.alert-message-preview p {
+    font-size: 12px;
+    color: #fee2e2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.phone-alert-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.phone-action-btn {
+    width: 100%;
+    padding: 13px;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    border: none;
+    transition: var(--transition);
+}
+
+.primary-action {
+    background: #ffffff;
+    color: #991b1b;
+}
+
+.primary-action:hover {
+    background: #f8fafc;
+}
+
+.secondary-action {
+    background: rgba(0, 0, 0, 0.45);
+    color: #fecaca;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.phone-home-indicator {
+    width: 100px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+    margin: 18px auto 0 auto;
+}
+
+/* ========================================= */
+/* REPORT SCAM MODAL                         */
+/* ========================================= */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-xl);
+    width: 100%;
+    max-width: 520px;
+    padding: 28px;
+    box-shadow: var(--shadow-xl);
+    animation: fadeInSlide 0.25s ease;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-heading);
+}
+
+.close-modal-btn {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.close-modal-btn:hover {
+    color: #ffffff;
+    background: var(--bg-main);
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-heading);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid var(--border-input);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: var(--transition);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px var(--gradient-glow);
+}
+
+.report-status {
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.report-status.success {
+    background: var(--safe-bg);
+    border: 1px solid var(--safe-border);
+    color: var(--safe-text);
+}
+
+.report-status.error {
+    background: var(--danger-bg);
+    border: 1px solid var(--danger-border);
+    color: var(--danger-text);
+}
+
+/* Footer */
+footer {
+    border-top: 1px solid #e2e8f0;
+    margin-top: auto;
+    padding: 24px 0;
+    background: #ffffff;
+}
+
+.footer-content {
+    text-align: center;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.footer-sub {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 4px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ========================================= */
+/* RESPONSIVE DESIGN                         */
+/* ========================================= */
+@media (max-width: 900px) {
+    .telemetry-bar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tips-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .telemetry-bar {
+        grid-template-columns: 1fr;
+    }
+
+    .nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 14px 0;
+    }
+
+    .nav-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .hero h1 {
+        font-size: 26px;
+    }
+
+    .button-row {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .tips-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+    </style>
 </head>
 <body>
     <!-- Top Navigation Bar -->
@@ -363,5 +1750,457 @@
     </footer>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+// Suspicious Message Classification - Full-Stack Client Logic
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Input & Action Elements
+    const messageInput = document.getElementById("messageInput");
+    const charCount = document.getElementById("charCount");
+    const checkBtn = document.getElementById("checkBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const errorBox = document.getElementById("errorBox");
+
+    // Result Card Elements
+    const resultSection = document.getElementById("resultSection");
+    const resultCategoryBadge = document.getElementById("resultCategoryBadge");
+    const resultTitle = document.getElementById("resultTitle");
+    const scoreNumber = document.getElementById("scoreNumber");
+    const gaugeRing = document.getElementById("gaugeRing");
+
+    const statusBanner = document.getElementById("statusBanner");
+    const bannerIcon = document.getElementById("bannerIcon");
+    const bannerHeadline = document.getElementById("bannerHeadline");
+    const bannerAdvice = document.getElementById("bannerAdvice");
+
+    const detectedCount = document.getElementById("detectedCount");
+    const warningsList = document.getElementById("warningsList");
+    const reportActionRow = document.getElementById("reportActionRow");
+    const reportThisMessageBtn = document.getElementById("reportThisMessageBtn");
+
+    // Telemetry Stats Elements
+    const statTotalScanned = document.getElementById("statTotalScanned");
+    const statFraudDetected = document.getElementById("statFraudDetected");
+    const statSuspicious = document.getElementById("statSuspicious");
+    const statSafe = document.getElementById("statSafe");
+
+    // Tab Navigation Elements
+    const tabScannerBtn = document.getElementById("tabScannerBtn");
+    const tabHistoryBtn = document.getElementById("tabHistoryBtn");
+    const scannerTabView = document.getElementById("scannerTabView");
+    const historyTabView = document.getElementById("historyTabView");
+    const historyTableBody = document.getElementById("historyTableBody");
+    const refreshHistoryBtn = document.getElementById("refreshHistoryBtn");
+
+    // Phone Alert Overlay Elements
+    const phoneAlertOverlay = document.getElementById("phoneAlertOverlay");
+    const alertSnippetText = document.getElementById("alertSnippetText");
+    const alertDismissBtn = document.getElementById("alertDismissBtn");
+    const alertReportNowBtn = document.getElementById("alertReportNowBtn");
+
+    // Report Scam Modal Elements
+    const reportModal = document.getElementById("reportModal");
+    const openReportModalBtn = document.getElementById("openReportModalBtn");
+    const closeReportModalBtn = document.getElementById("closeReportModalBtn");
+    const reportForm = document.getElementById("reportForm");
+    const reportSender = document.getElementById("reportSender");
+    const reportCategory = document.getElementById("reportCategory");
+    const reportMessage = document.getElementById("reportMessage");
+    const reportStatusMsg = document.getElementById("reportStatusMsg");
+
+    // Sound toggle state
+    let soundEnabled = true;
+    const soundToggle = document.getElementById("soundToggle");
+    const soundIcon = document.getElementById("soundIcon");
+
+    soundToggle.addEventListener("click", () => {
+        soundEnabled = !soundEnabled;
+        if (soundEnabled) {
+            soundIcon.textContent = "🔔";
+            soundToggle.innerHTML = `<span>🔔</span> Sound ON`;
+        } else {
+            soundIcon.textContent = "🔕";
+            soundToggle.innerHTML = `<span>🔕</span> Sound OFF`;
+        }
+    });
+
+    // Synthesize warning siren using Web Audio API
+    function playEmergencyAlertSound() {
+        if (!soundEnabled) return;
+        try {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContext) return;
+            const ctx = new AudioContext();
+
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = "sawtooth";
+            osc.frequency.setValueAtTime(650, ctx.currentTime);
+            osc.frequency.linearRampToValueAtTime(880, ctx.currentTime + 0.15);
+            osc.frequency.linearRampToValueAtTime(650, ctx.currentTime + 0.3);
+            osc.frequency.linearRampToValueAtTime(920, ctx.currentTime + 0.45);
+            osc.frequency.linearRampToValueAtTime(650, ctx.currentTime + 0.6);
+
+            gain.gain.setValueAtTime(0.2, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.7);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start();
+            osc.stop(ctx.currentTime + 0.75);
+        } catch (e) {
+            console.warn("Audio alert failed:", e);
+        }
+    }
+
+    // Quick Test Scenarios
+    const SAMPLES = {
+        scam1: "URGENT: Your SBI Bank account has been temporarily locked due to pending KYC verification. Please click here https://sbi-kyc-verify-alert.com/login and submit your Account Number and OTP immediately to avoid permanent deactivation.",
+        scam2: "Congratulations! You have WON the International Jackpot Prize of $50,000! Claim your reward now by clicking the link and entering your details immediately.",
+        scam3: "Exciting Work From Home Job Offer! Earn $500 daily typing simple data. Just pay a small registration fee of $15 to get started immediately. Click here to pay.",
+        safe: "Hi Rahul, are you free for the project discussion tomorrow at 11 AM? Please let me know."
+    };
+
+    document.querySelectorAll(".sample-chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+            const key = chip.getAttribute("data-sample");
+            if (SAMPLES[key]) {
+                messageInput.value = SAMPLES[key];
+                updateCharCount();
+                clearError();
+            }
+        });
+    });
+
+    function updateCharCount() {
+        charCount.textContent = messageInput.value.length;
+    }
+    messageInput.addEventListener("input", updateCharCount);
+
+    function showError(msg) {
+        errorBox.textContent = msg;
+        errorBox.classList.remove("hidden");
+    }
+
+    function clearError() {
+        errorBox.textContent = "";
+        errorBox.classList.add("hidden");
+    }
+
+    // Telemetry Statistics Fetcher
+    async function fetchTelemetryStats() {
+        try {
+            const res = await fetch("/api/stats");
+            if (res.ok) {
+                const stats = await res.json();
+                statTotalScanned.textContent = stats.total_scanned;
+                statFraudDetected.textContent = stats.fraud_detected;
+                statSuspicious.textContent = stats.suspicious_detected;
+                statSafe.textContent = stats.safe_messages;
+            }
+        } catch (e) {
+            console.error("Telemetry fetch failed:", e);
+        }
+    }
+
+    // Fetch and populate backend audit history table
+    async function fetchAuditHistory() {
+        try {
+            historyTableBody.innerHTML = `<tr><td colspan="6" class="empty-state">Loading latest database logs...</td></tr>`;
+            const res = await fetch("/api/history?limit=25");
+            if (!res.ok) throw new Error("Failed to load logs");
+            const data = await res.json();
+            const logs = data.history || [];
+
+            if (logs.length === 0) {
+                historyTableBody.innerHTML = `<tr><td colspan="6" class="empty-state">No messages analyzed yet. Scan a message to record the first entry!</td></tr>`;
+                return;
+            }
+
+            historyTableBody.innerHTML = "";
+            logs.forEach(item => {
+                const tr = document.createElement("tr");
+
+                let badgeClass = "badge-safe";
+                if (item.status === "FRAUD") badgeClass = "badge-fraud";
+                else if (item.status === "SUSPICIOUS") badgeClass = "badge-suspicious";
+
+                const warningsText = item.warnings && item.warnings.length > 0
+                    ? item.warnings.slice(0, 2).join(", ") + (item.warnings.length > 2 ? ` (+${item.warnings.length - 2} more)` : "")
+                    : "None (Clean)";
+
+                const snippet = item.message_text.length > 55
+                    ? item.message_text.slice(0, 55) + "..."
+                    : item.message_text;
+
+                tr.innerHTML = `
+                    <td>#${item.id}</td>
+                    <td><span class="table-badge ${badgeClass}">${item.status}</span></td>
+                    <td><strong>${item.score}</strong>/10</td>
+                    <td><code>${escapeHtml(snippet)}</code></td>
+                    <td>${escapeHtml(warningsText)}</td>
+                    <td style="color: #9ca3af; font-size: 11px;">${item.created_at || 'Just now'}</td>
+                `;
+                historyTableBody.appendChild(tr);
+            });
+        } catch (e) {
+            historyTableBody.innerHTML = `<tr><td colspan="6" class="empty-state" style="color: #f87171;">Error fetching history from backend database.</td></tr>`;
+        }
+    }
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    // Tab Switch Handlers
+    tabScannerBtn.addEventListener("click", () => {
+        tabScannerBtn.classList.add("active");
+        tabHistoryBtn.classList.remove("active");
+        scannerTabView.classList.remove("hidden");
+        historyTabView.classList.add("hidden");
+    });
+
+    tabHistoryBtn.addEventListener("click", () => {
+        tabHistoryBtn.classList.add("active");
+        tabScannerBtn.classList.remove("active");
+        historyTabView.classList.remove("hidden");
+        scannerTabView.classList.add("hidden");
+        fetchAuditHistory();
+    });
+
+    refreshHistoryBtn.addEventListener("click", fetchAuditHistory);
+
+    // Dismiss Alert
+    alertDismissBtn.addEventListener("click", () => {
+        phoneAlertOverlay.classList.add("hidden");
+    });
+
+    alertReportNowBtn.addEventListener("click", () => {
+        phoneAlertOverlay.classList.add("hidden");
+        openReportWithContent(messageInput.value);
+    });
+
+    reportThisMessageBtn.addEventListener("click", () => {
+        openReportWithContent(messageInput.value);
+    });
+
+    // Phone overlay dismiss on click outside
+    phoneAlertOverlay.addEventListener("click", (e) => {
+        if (e.target === phoneAlertOverlay) {
+            phoneAlertOverlay.classList.add("hidden");
+        }
+    });
+
+    // Check message action
+    async function handleCheckMessage() {
+        clearError();
+        const text = messageInput.value.trim();
+
+        if (!text) {
+            showError("Please paste or type a message to check.");
+            messageInput.focus();
+            return;
+        }
+
+        checkBtn.disabled = true;
+        checkBtn.innerHTML = `<span>⏳</span><span>Analyzing...</span>`;
+
+        try {
+            const response = await fetch("/api/check", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ message: text })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                showError(data.error || "An error occurred while evaluating the message.");
+                return;
+            }
+
+            renderResults(data, text);
+            // Refresh telemetry stats after scan
+            fetchTelemetryStats();
+        } catch (err) {
+            showError("Could not reach classification backend. Please verify the server is running.");
+            console.error(err);
+        } finally {
+            checkBtn.disabled = false;
+            checkBtn.innerHTML = `<span class="btn-icon">🔍</span><span>Check Message</span>`;
+        }
+    }
+
+    function renderResults(data, originalText) {
+        resultSection.classList.remove("hidden");
+
+        const score = data.score || 0;
+        const status = data.status || "SAFE";
+        const warnings = data.warnings || [];
+        const advice = data.advice || "";
+
+        scoreNumber.textContent = score;
+
+        gaugeRing.className = "risk-gauge";
+        statusBanner.className = "status-banner";
+
+        warningsList.innerHTML = "";
+        detectedCount.textContent = `${warnings.length} Indicator${warnings.length === 1 ? '' : 's'}`;
+
+        if (status === "FRAUD" || score >= 6) {
+            gaugeRing.classList.add("gauge-fraud");
+            statusBanner.classList.add("banner-fraud");
+            resultCategoryBadge.textContent = "CRITICAL THREAT";
+            resultCategoryBadge.style.color = "#f87171";
+            resultTitle.textContent = "🚨 FRAUD MESSAGE DETECTED";
+
+            bannerIcon.textContent = "🛑";
+            bannerHeadline.textContent = "DANGER: HIGH-RISK FRAUD PATTERNS DETECTED";
+            bannerAdvice.textContent = advice;
+            reportActionRow.classList.remove("hidden");
+
+            // Open Phone Emergency Red Alert
+            alertSnippetText.textContent = originalText.length > 90 ? originalText.slice(0, 90) + "..." : originalText;
+            phoneAlertOverlay.classList.remove("hidden");
+            playEmergencyAlertSound();
+
+        } else if (status === "SUSPICIOUS" || score >= 3) {
+            gaugeRing.classList.add("gauge-suspicious");
+            statusBanner.classList.add("banner-suspicious");
+            resultCategoryBadge.textContent = "ELEVATED RISK";
+            resultCategoryBadge.style.color = "#fbbf24";
+            resultTitle.textContent = "⚠️ SUSPICIOUS MESSAGE DETECTED";
+
+            bannerIcon.textContent = "⚠️";
+            bannerHeadline.textContent = "WARNING: SUSPICIOUS PATTERNS DETECTED";
+            bannerAdvice.textContent = advice;
+            reportActionRow.classList.remove("hidden");
+
+            // Trigger Phone Red Alert Modal as user instructed
+            alertSnippetText.textContent = originalText.length > 90 ? originalText.slice(0, 90) + "..." : originalText;
+            phoneAlertOverlay.classList.remove("hidden");
+            playEmergencyAlertSound();
+
+        } else {
+            gaugeRing.classList.add("gauge-safe");
+            statusBanner.classList.add("banner-safe");
+            resultCategoryBadge.textContent = "LOW RISK";
+            resultCategoryBadge.style.color = "#34d399";
+            resultTitle.textContent = "✅ MESSAGE APPEARS SAFE";
+
+            bannerIcon.textContent = "🛡️";
+            bannerHeadline.textContent = "CLEAN: NO THREAT SIGNALS DETECTED";
+            bannerAdvice.textContent = advice;
+            reportActionRow.classList.add("hidden");
+
+            phoneAlertOverlay.classList.add("hidden");
+        }
+
+        // Populate warnings list
+        if (warnings.length > 0) {
+            warnings.forEach(warn => {
+                const li = document.createElement("li");
+                li.innerHTML = `<span>⚠️</span><span>${escapeHtml(warn)}</span>`;
+                warningsList.appendChild(li);
+            });
+        } else {
+            const li = document.createElement("li");
+            li.className = "safe-item";
+            li.innerHTML = `<span>✔️</span><span>No phishing, fake payment, OTP, or scam patterns found in text.</span>`;
+            warningsList.appendChild(li);
+        }
+
+        resultSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    // Clear action
+    clearBtn.addEventListener("click", () => {
+        messageInput.value = "";
+        updateCharCount();
+        clearError();
+        resultSection.classList.add("hidden");
+        phoneAlertOverlay.classList.add("hidden");
+        messageInput.focus();
+    });
+
+    checkBtn.addEventListener("click", handleCheckMessage);
+
+    messageInput.addEventListener("keydown", (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+            handleCheckMessage();
+        }
+    });
+
+    // Report Scam Modal logic
+    function openReportWithContent(text) {
+        reportMessage.value = text || "";
+        reportStatusMsg.classList.add("hidden");
+        reportModal.classList.remove("hidden");
+    }
+
+    openReportModalBtn.addEventListener("click", () => {
+        openReportWithContent(messageInput.value);
+    });
+
+    closeReportModalBtn.addEventListener("click", () => {
+        reportModal.classList.add("hidden");
+    });
+
+    reportModal.addEventListener("click", (e) => {
+        if (e.target === reportModal) {
+            reportModal.classList.add("hidden");
+        }
+    });
+
+    reportForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const msg = reportMessage.value.trim();
+        const cat = reportCategory.value;
+        const sender = reportSender.value.trim();
+
+        if (!msg) return;
+
+        try {
+            const res = await fetch("/api/report", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    message: msg,
+                    category: cat,
+                    sender_info: sender || "Unknown"
+                })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                reportStatusMsg.textContent = "✅ Scam message successfully reported and stored in database.";
+                reportStatusMsg.className = "report-status success";
+                reportStatusMsg.classList.remove("hidden");
+                fetchTelemetryStats();
+                setTimeout(() => {
+                    reportModal.classList.add("hidden");
+                }, 1400);
+            } else {
+                reportStatusMsg.textContent = data.error || "Submission failed.";
+                reportStatusMsg.className = "report-status error";
+                reportStatusMsg.classList.remove("hidden");
+            }
+        } catch (err) {
+            reportStatusMsg.textContent = "Server communication error.";
+            reportStatusMsg.className = "report-status error";
+            reportStatusMsg.classList.remove("hidden");
+        }
+    });
+
+    // Initial load
+    fetchTelemetryStats();
+});
+
+    </script>
 </body>
 </html>
